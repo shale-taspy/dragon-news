@@ -1,5 +1,6 @@
 
 import LeftSide from "@/app/components/homepage/news/LeftSide"
+import NewsCard from "@/app/components/homepage/news/NewsCard";
 import RightSide from "@/app/components/homepage/news/RightSide"
 import React from 'react';
 
@@ -30,14 +31,14 @@ const NewsCategory = async ({params}) => {
   return (
     <div className="grid grid-cols-12 gap-2 container mx-auto my-12">
       <LeftSide categories={categories} activeId={id}></LeftSide>
-      <div className="font-bold text-3xl  col-span-6">
+      <div className=" text-3xl  col-span-6">
         All News
         <div className="space-y-2">
 {
         news.length > 0? news.map(n=>{
-            return <div key={n._id} className="p-4">
+            return <NewsCard key={n._id} news={n}>
               {n.title}
-            </div>
+            </NewsCard>
           })
           : <h2 className="font-medium text-cyan-600">No News Found</h2>
         }
