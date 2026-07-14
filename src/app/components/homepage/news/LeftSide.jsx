@@ -7,7 +7,7 @@ const LeftSide = ({categories, activeId}) => {
   return (
     <div className="font-bold text-3xl col-span-3 mt-5">
         <p className=" ">All Categories</p>
-  <ul className="flex flex-col gap-2">
+  <ul className="flex flex-col gap-2 mt-5">
       {
       categories.news_category.map(category=>{
         return <li key={category.category_id} 
