@@ -1,13 +1,31 @@
 'use client'
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
+import { authClient } from "@/app/lib/auth-client";
+import { FaEye, FaEyeSlash } from 'react-icons/fa6';
 
 const SignUpPage = () => {
 
-  const {register, handleSubmit,formState:{errors}} = useForm()
-  const handleSignup = (data) => {
+  const { register, handleSubmit, formState: { errors } } = useForm()
+  const [isShowPassword, setIsShowPassword] = useState(false)
+  const handleSignup = async(data) => {
     console.log(data);
+    const {name,email,photo,password} = data
+    const {data:res,error} = await authClient.signUp.email({
+          name: name, 
+          email: email, 
+          password: password, 
+          image: photo,
+          callbackURL: "/",
+    })
+    console.log(res, error);
+    if (error) {
+      alert(error.message)
+    }
+    if (res) {
+      alert("SignUp SuccessFull")
+    }
 
   }
   return (
@@ -35,13 +53,14 @@ const SignUpPage = () => {
             
           </fieldset>
 
-          <fieldset className="fieldset">
+          <fieldset className="fieldset relative">
             <legend className="fieldset-legend">Password</legend>
-            <input type="password" className="input w-full" placeholder="Type your password" {...register('password', { required: "password is required please enter your password" })} />
+            <input type={isShowPassword ? "text" : "password"} className="input w-full" placeholder="Type your password" {...register('password', { required: "password is required please enter your password" })} />
+            <span className='absolute right-3 top-4 text-base' onClick={()=>setIsShowPassword(!isShowPassword)}>{isShowPassword?<FaEye></FaEye>:<FaEyeSlash></FaEyeSlash> }</span>
             {errors.password && <p className='text-red-600'>{errors.password.message}</p>}
           </fieldset>
           
-          <button className="btn w-full bg-slate-900 text-white">Login</button>
+          <button className="btn w-full bg-slate-900 text-white" >SignUp</button>
         </form>
         <p className='text-center mt-4'>Already have account? <Link href="/login" className='text-blue-600'>Login</Link> </p>
       </div>
